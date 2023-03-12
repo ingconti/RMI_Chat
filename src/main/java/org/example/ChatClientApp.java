@@ -24,9 +24,7 @@ public class ChatClientApp extends UnicastRemoteObject implements ChatClient {
     }
 
 
-    private void go ()
-            throws IOException, MalformedURLException,
-            NotBoundException, RemoteException
+    private void go () throws IOException, NotBoundException
     {
         // Getting the registry
         Registry registry = null;
@@ -49,15 +47,12 @@ public class ChatClientApp extends UnicastRemoteObject implements ChatClient {
     }
 
 
-    public ChatClientApp()
-            throws RemoteException
-    {
+    public ChatClientApp() throws RemoteException {
+
     }
 
 
-    public void receive (String message)
-            throws RemoteException
-    {
+    public void receive (String message) throws RemoteException {
         System.out.println (message);
     }
 }
