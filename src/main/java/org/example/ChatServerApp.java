@@ -1,9 +1,6 @@
 package org.example;
 
-import java.net.MalformedURLException;
-
 import java.rmi.AlreadyBoundException;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
 
 import java.rmi.registry.LocateRegistry;
@@ -15,14 +12,14 @@ import java.util.List;
 import java.util.Iterator;
 
 
-public class ChatServerImpl
+public class ChatServerApp
         extends UnicastRemoteObject
         implements ChatServer
 {
     public static void main (String[] args)
     {
         try {
-            new ChatServerImpl ().go ();
+            new ChatServerApp().go ();
         } catch (Exception e) {
             System.err.println (e);
         }
@@ -48,14 +45,14 @@ public class ChatServerImpl
     private List receivers;
 
 
-    public ChatServerImpl ()
+    public ChatServerApp()
             throws RemoteException
     {
         receivers = new ArrayList (10);
     }
 
 
-    public void register (ChatReceiver cr)
+    public void register (ChatClient cr)
             throws RemoteException
     {
         receivers.add (cr);
@@ -68,7 +65,7 @@ public class ChatServerImpl
         System.out.println ("ChatServerImpl received: " + message);
         Iterator iter = receivers.iterator ();
         while (iter.hasNext ()) {
-            ChatReceiver cr = (ChatReceiver) iter.next ();
+            ChatClient cr = (ChatClient) iter.next ();
             cr.receive (message);
         }
     }

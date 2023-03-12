@@ -6,9 +6,7 @@ import java.io.IOException;
 
 import java.net.MalformedURLException;
 
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import java.rmi.registry.LocateRegistry;
@@ -16,12 +14,10 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 
-public class ChatReceiverImpl extends UnicastRemoteObject implements ChatReceiver
-{
-    public static void main (String[] args)
-    {
+public class ChatClientApp extends UnicastRemoteObject implements ChatClient {
+    public static void main (String[] args) {
         try {
-            new ChatReceiverImpl ().go ();
+            new ChatClientApp().go ();
         } catch (Exception e) {
             System.err.println (e);
         }
@@ -34,8 +30,6 @@ public class ChatReceiverImpl extends UnicastRemoteObject implements ChatReceive
     {
         // Getting the registry
         Registry registry = null;
-
-        //was: ChatServer cs = (ChatServer) Naming.lookup ("rmi://127.0.0.1/ChatService");
 
         registry = LocateRegistry.getRegistry("127.0.0.1", Settings.PORT);
 
@@ -55,7 +49,7 @@ public class ChatReceiverImpl extends UnicastRemoteObject implements ChatReceive
     }
 
 
-    public ChatReceiverImpl ()
+    public ChatClientApp()
             throws RemoteException
     {
     }
