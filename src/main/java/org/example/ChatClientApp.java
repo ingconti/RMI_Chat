@@ -2,11 +2,6 @@ package org.example;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.IOException;
-
-import java.net.MalformedURLException;
-
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import java.rmi.registry.LocateRegistry;
@@ -17,17 +12,16 @@ import java.rmi.server.UnicastRemoteObject;
 public class ChatClientApp extends UnicastRemoteObject implements ChatClient {
     public static void main (String[] args) {
         try {
-            new ChatClientApp().go ();
+            new ChatClientApp().go();
         } catch (Exception e) {
-            System.err.println (e);
+            e.printStackTrace();
         }
     }
 
 
-    private void go () throws IOException, NotBoundException
-    {
+    private void go () throws Exception {
         // Getting the registry
-        Registry registry = null;
+        Registry registry;
 
         registry = LocateRegistry.getRegistry("127.0.0.1", Settings.PORT);
 
