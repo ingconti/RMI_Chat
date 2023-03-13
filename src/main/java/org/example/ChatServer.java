@@ -4,6 +4,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface ChatServer extends Remote{
-    public void register (ChatClient cr) throws RemoteException;
-    public void send (String message) throws RemoteException;
+    void login(ChatClient cc) throws RemoteException;
+    void send (String message) throws RemoteException;
 }

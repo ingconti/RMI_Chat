@@ -13,14 +13,14 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
     public static void main (String[] args)
     {
         try {
-            new ChatServerApp().go();
+            new ChatServerApp().startServer();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-    private void go() throws RemoteException {
+    private void startServer() throws RemoteException {
 
         // Bind the remote object's stub in the registry
         //DO NOT CALL Registry registry = LocateRegistry.getRegistry();
@@ -36,22 +36,22 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
     }
 
 
-    private final List<ChatClient> receivers;
+    private final List<ChatClient> chatClients;
 
     public ChatServerApp() throws RemoteException {
-        this.receivers = new ArrayList<>();
+        this.chatClients = new ArrayList<>();
     }
 
 
-    public void register (ChatClient cr) throws RemoteException {
-        this.receivers.add(cr);
+    public void login(ChatClient cc) throws RemoteException {
+        this.chatClients.add(cc);
     }
 
 
     public void send (String message) throws RemoteException {
         System.out.println ("server received: " + message);
-        for (ChatClient receiver : receivers) {
-            receiver.receive(message);
+        for (ChatClient cc : chatClients) {
+            cc.receive(message);
         }
     }
 }

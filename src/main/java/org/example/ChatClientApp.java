@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -11,32 +12,26 @@ import java.rmi.server.UnicastRemoteObject;
 public class ChatClientApp extends UnicastRemoteObject implements ChatClient {
     public static void main (String[] args) {
         try {
-            new ChatClientApp().go();
+            new ChatClientApp().startClient();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-    private void go () throws Exception {
+    private ChatServer cs;
+
+    private void startClient() throws Exception {
         // Getting the registry
         Registry registry;
 
-        registry = LocateRegistry.getRegistry("127.0.0.1", Settings.PORT);
-
-        ChatServer cs;
+        registry = LocateRegistry.getRegistry(Settings.SERVER_NAME, Settings.PORT);
 
         // Looking up the registry for the remote object
-        cs = (ChatServer) registry.lookup("ChatService");
+        this.cs = (ChatServer) registry.lookup("ChatService");
+        this.cs.login(this);
 
-        cs.register (this);
-
-        BufferedReader br = new BufferedReader (new InputStreamReader (System.in));
-        String message;
-
-        while ( (message = br.readLine ()) != null) {
-            cs.send(message);
-        }
+       inputLoop();
     }
 
 
@@ -46,6 +41,17 @@ public class ChatClientApp extends UnicastRemoteObject implements ChatClient {
 
 
     public void receive (String message) throws RemoteException {
-        System.out.println (message);
+        System.out.println(message);
+    }
+
+
+
+    void inputLoop() throws IOException {
+        BufferedReader br = new BufferedReader (new InputStreamReader (System.in));
+        String message;
+
+        while ( (message = br.readLine ()) != null) {
+            cs.send(message);
+        }
     }
 }
