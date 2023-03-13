@@ -13,14 +13,14 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
     public static void main (String[] args)
     {
         try {
-            new ChatServerApp().go ();
+            new ChatServerApp().go();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-    private void go () throws RemoteException {
+    private void go() throws RemoteException {
 
         // Bind the remote object's stub in the registry
         //DO NOT CALL Registry registry = LocateRegistry.getRegistry();
