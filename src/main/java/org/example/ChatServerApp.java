@@ -12,6 +12,7 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
 {
     public static void main (String[] args)
     {
+        fixIt(); // for NON-localhost
         try {
             new ChatServerApp().startServer();
         } catch (Exception e) {
@@ -44,6 +45,7 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
 
 
     public void login(ChatClient cc) throws RemoteException {
+        System.out.println("arrived " + cc.toString());
         this.chatClients.add(cc);
     }
 
@@ -51,7 +53,12 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
     public void send (String message) throws RemoteException {
         System.out.println ("server received: " + message);
         for (ChatClient cc : chatClients) {
-            cc.receive(message);
+            cc.receive(message.toUpperCase());
         }
     }
+
+    static void fixIt(){
+        System.setProperty("java.rmi.server.hostname","192.168.1.12");
+    }
+
 }
