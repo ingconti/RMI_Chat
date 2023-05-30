@@ -4,8 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
@@ -33,6 +32,7 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
             e.printStackTrace();
         }
         System.out.println("Server ready");
+       // eventually..... this.timer = startTimer();
 
     }
 
@@ -61,4 +61,26 @@ public class ChatServerApp  extends UnicastRemoteObject implements ChatServer
         System.setProperty("java.rmi.server.hostname","192.168.1.12");
     }
 
+
+    Timer timer;
+
+     private Timer startTimer(){
+         timer = new Timer("Timer");
+
+         TimerTask task = new TimerTask() {
+             public void run() {
+                 String s = new Date().toString();
+                 try {
+                    send(s);
+                 } catch (Exception e) {
+                     throw new RuntimeException(e);
+                 }
+             }
+         };
+
+        long delay = 0;
+        long period = 1000L;
+        timer.schedule(task, delay, period);
+        return timer;
+    } // startTimer
 }
